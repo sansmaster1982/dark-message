@@ -1,0 +1,9 @@
+# Notes files that belong on the developer's machine only, never in the repo -
+# even a stripped copy risks growing back private content over time.
+CLAUDE.md
+AGENTS.md
+.claude/
+
+# OS noise
+.DS_Store
+Thumbs.db

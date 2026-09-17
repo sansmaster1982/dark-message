@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Whole cache dir: encrypted .darkm files written by the Encrypt screen -->
+    <cache-path name="cache" path="." />
+    <!-- Decrypted plaintext files shared from the Decrypt screen; wiped by DecryptViewModel -->
+    <cache-path name="share" path="share/" />
+</paths>

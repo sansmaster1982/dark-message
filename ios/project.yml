@@ -1,0 +1,82 @@
+name: DarkMessage
+options:
+  bundleIdPrefix: com.darkmessage
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+
+targets:
+  DarkMessage:
+    type: application
+    platform: iOS
+    sources:
+      - path: DarkMessage
+    resources:
+      - path: DarkMessage/Resources/en.lproj
+      - path: DarkMessage/Resources/ru.lproj
+    settings:
+      base:
+        INFOPLIST_FILE: DarkMessage/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.darkmessage.ios
+        MARKETING_VERSION: "1.3.0"
+        CURRENT_PROJECT_VERSION: "2"
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: "YES"
+      configs:
+        # Required by "@testable import DarkMessage" in DarkMessageTests.
+        # Debug-only, so the Release archive is unaffected.
+        Debug:
+          ENABLE_TESTABILITY: "YES"
+
+  DarkMessageTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: DarkMessageTests
+    dependencies:
+      - target: DarkMessage
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: "YES"
+        PRODUCT_BUNDLE_IDENTIFIER: com.darkmessage.ios.tests
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/DarkMessage.app/DarkMessage
+        BUNDLE_LOADER: $(TEST_HOST)
+
+  # Drives the real screens on a simulator. Separate from the unit-test bundle
+  # because a UI test runs in its own process and talks to the app from outside,
+  # which is the only way to prove a button actually presents something.
+  DarkMessageUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: DarkMessageUITests
+    dependencies:
+      - target: DarkMessage
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: "YES"
+        PRODUCT_BUNDLE_IDENTIFIER: com.darkmessage.ios.uitests
+        TEST_TARGET_NAME: DarkMessage
+
+schemes:
+  DarkMessage:
+    build:
+      targets:
+        DarkMessage: all
+        DarkMessageTests: [test]
+        DarkMessageUITests: [test]
+    test:
+      targets:
+        - DarkMessageTests
+        - DarkMessageUITests
+    archive:
+      config: Release

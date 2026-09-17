@@ -1,0 +1,36 @@
+# Android build artifacts
+build/
+app/build/
+.gradle/
+.kotlin/
+.idea/
+*.iml
+captures/
+local.properties
+*.apk
+*.aab
+app/release/
+# secrets
+*.jks
+*.keystore
+# junk / articles / screenshots (not part of the app)
+build_err.txt
+build_log.txt
+habr_*.md
+habr_*.xlsx
+habr_*.png
+vc_article_*.md
+create_habr_analysis.py
+scrinshot/
+screenshots_*/
+.claude/settings.local*.json
+
+# Signing material and secrets - never committed, only ever live as GitHub
+# Actions encrypted secrets or local.properties. Found missing here during the
+# pre-publish audit.
+*.p12
+keystore.properties
+signing.properties
+google-services.json
+.env
+.env.*

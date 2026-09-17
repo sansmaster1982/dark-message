@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Decrypt screen: file / text received from another app -->
+    <string name="decrypt_incoming_pick_chat">Received — select the chat to decrypt it</string>
+    <string name="decrypt_incoming_no_chats">Received — first create a chat with the same passphrase in the Chats tab</string>
+    <string name="decrypt_incoming_file">File: %1$s</string>
+    <string name="decrypt_save_document_unavailable">No app available to save the document</string>
+</resources>

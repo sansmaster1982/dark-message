@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- NO internet permission. This app is fully offline. The two tools:node="remove" entries
+         below are a merge-time guard: if any current or future dependency declares INTERNET or
+         ACCESS_NETWORK_STATE, the manifest merger strips it instead of silently granting it.
+         verifyNoNetworkPermissions (app/build.gradle.kts) still fails the release build as a
+         second line of defence. -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove" />
+
+    <!-- Camera: used only to scan a chat-key QR code shown on the contact's screen. Frames are
+         analysed in memory and never stored or sent anywhere (the app has no network access).
+         required="false" keeps camera-less devices (and tablets) eligible for install. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <application
+        android:name=".DarkMessageApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:localeConfig="@xml/locales_config"
+        android:theme="@style/Theme.DarkMessage">
+
+        <!-- singleTask: a .darkm opened while the app is running is delivered to the existing
+             instance via onNewIntent() instead of creating a second MainActivity. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.DarkMessage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- .darkm files reported as a generic binary type (Telegram, Files, Downloads,
+                 DocumentsProvider URIs without an extension in the path) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/x-darkm" />
+            </intent-filter>
+
+            <!-- .darkm files with any other MIME type, matched by extension.
+                 android:pathPattern uses a non-backtracking glob: ".*\\.darkm" only matches when
+                 the FIRST dot in the path starts ".darkm", so paths that contain earlier dots
+                 (package names, "my.notes.darkm") need the additional variants below.
+                 android:host="*" is required for the path attributes to be evaluated at all
+                 (for file:// URIs the host is empty and "*" matches it). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.darkm" />
+                <data android:pathPattern=".*\\..*\\.darkm" />
+                <data android:pathPattern=".*\\..*\\..*\\.darkm" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.darkm" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.darkm" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.darkm" />
+                <!-- API 31+: exact suffix match; ignored on older versions (patterns above apply) -->
+                <data android:pathSuffix=".darkm" />
+            </intent-filter>
+
+            <!-- Handle files shared from messengers via "Send to" / Share -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/octet-stream" />
+            </intent-filter>
+
+            <!-- Also accept any file type shared (some messengers use generic mime) and plain
+                 text (an encrypted Base64 message shared from a messenger) -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+
+            <!-- Chat-key QR deep link: darkmessage://chat/1/<base64url body>. MainActivity turns it
+                 into Incoming.ChatQr(intent.dataString) and routes it to the QR scan/confirm flow,
+                 never to Decrypt. Kept as a SEPARATE filter from the .darkm VIEW filters above
+                 (those require scheme content/file plus a mimeType, so they can never match this
+                 URI). No android:mimeType here on purpose: a darkmessage:// URI carries no MIME
+                 type, and adding one would stop this filter matching. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="darkmessage" android:host="chat" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Lets AppCompat persist the per-app locale on Android < 13, so the saved language is
+             applied before the first Activity is created (no extra recreate on cold start). -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+    </application>
+
+</manifest>

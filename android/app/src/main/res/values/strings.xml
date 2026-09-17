@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dark Message Crypto Chat</string>
+
+    <!-- Navigation -->
+    <string name="nav_chats">Chats</string>
+    <string name="nav_encrypt">Encrypt</string>
+    <string name="nav_decrypt">Decrypt</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Chats screen -->
+    <string name="chats_title">Dark Message</string>
+    <string name="chats_empty_title">No chats</string>
+    <string name="chats_empty_subtitle">Press + to create an encrypted chat</string>
+    <string name="chats_add">Add chat</string>
+    <string name="chats_edit">Edit</string>
+    <string name="chats_delete">Delete</string>
+    <string name="chats_new_chat">New chat</string>
+    <string name="chats_edit_chat">Edit chat</string>
+    <string name="chats_delete_chat">Delete chat</string>
+    <string name="chats_delete_confirm">Delete chat \"%1$s\"? The passphrase will be permanently deleted.</string>
+    <string name="chats_contact_name">Contact name</string>
+    <string name="chats_passphrase">Passphrase</string>
+    <string name="chats_passphrase_hint">Both users must enter the same phrase</string>
+    <string name="chats_create">Create</string>
+    <string name="chats_save">Save</string>
+    <string name="chats_cancel">Cancel</string>
+    <string name="chats_show">Show</string>
+    <string name="chats_hide">Hide</string>
+    <string name="chats_generate_key">Generate key</string>
+    <string name="chats_error_key_not_saved">The key could not be saved. The chat was not created.</string>
+
+    <!-- Chat selector (Encrypt / Decrypt screens) -->
+    <string name="chat_selector_placeholder">Select chat</string>
+    <string name="chat_selector_label">Chat</string>
+    <string name="chat_selector_empty">No chats. Create one in the \"Chats\" tab</string>
+
+    <!-- Encrypt screen -->
+    <string name="encrypt_title">Encrypt</string>
+    <string name="encrypt_text">Text</string>
+    <string name="encrypt_photo">Photo</string>
+    <string name="encrypt_document">Document</string>
+    <string name="encrypt_message">Message</string>
+    <string name="encrypt_select_image">Select image</string>
+    <string name="encrypt_select_document">Select document</string>
+    <string name="encrypt_button">Encrypt</string>
+    <string name="encrypt_encrypting">Encrypting…</string>
+    <string name="encrypt_success">Encrypted!</string>
+    <string name="encrypt_copy">Copy</string>
+    <string name="encrypt_share">Share</string>
+    <string name="encrypt_send">Send</string>
+    <string name="encrypt_send_file">Send .darkm file</string>
+    <string name="encrypt_or">or</string>
+    <string name="encrypt_copied">Copied to clipboard</string>
+    <string name="encrypt_send_to">Send to…</string>
+    <string name="encrypt_send_file_to">Send file…</string>
+    <string name="encrypt_error_no_passphrase">Passphrase not found for this chat</string>
+    <string name="encrypt_error_empty_text">Enter text to encrypt</string>
+    <string name="encrypt_error_no_image">Select an image</string>
+    <string name="encrypt_error_no_document">Select a document</string>
+    <string name="encrypt_error_read_image">Could not read the image</string>
+    <string name="encrypt_error_read_document">Could not read the document</string>
+    <string name="encrypt_error">Encryption error: %1$s</string>
+    <string name="encrypt_clear">Clear</string>
+    <string name="encrypt_document_selected">Document: %1$s</string>
+
+    <!-- Decrypt screen -->
+    <string name="decrypt_title">Decrypt</string>
+    <string name="decrypt_paste_text">Paste text</string>
+    <string name="decrypt_import_file">Import file</string>
+    <string name="decrypt_input_label">Encrypted text (Base64)</string>
+    <string name="decrypt_paste_clipboard">Paste from clipboard</string>
+    <string name="decrypt_select_file">Select .darkm file</string>
+    <string name="decrypt_file_selected">File selected</string>
+    <string name="decrypt_file_received">File received — select a chat and press Decrypt</string>
+    <string name="decrypt_button">Decrypt</string>
+    <string name="decrypt_decrypting">Decrypting…</string>
+    <string name="decrypt_result_text">Decrypted message:</string>
+    <string name="decrypt_result_image">Decrypted image:</string>
+    <string name="decrypt_result_document">Decrypted document:</string>
+    <string name="decrypt_copy">Copy</string>
+    <string name="decrypt_copied">Copied</string>
+    <string name="decrypt_save_gallery">Gallery</string>
+    <string name="decrypt_save_document">Save</string>
+    <string name="decrypt_saved_gallery">Saved to gallery</string>
+    <string name="decrypt_saved_document">Document saved</string>
+    <string name="decrypt_error_save">Save error</string>
+    <string name="decrypt_image_error">Could not display the image</string>
+    <string name="decrypt_error_no_passphrase">Passphrase not found for this chat</string>
+    <string name="decrypt_error_empty_text">Paste the encrypted text</string>
+    <string name="decrypt_error_bad_base64">Invalid Base64 format</string>
+    <string name="decrypt_error_no_file">Select a .darkm file</string>
+    <string name="decrypt_error_read_file">Could not read the file</string>
+    <string name="decrypt_error">Decryption error: %1$s</string>
+    <string name="decrypt_error_format">Invalid data format</string>
+    <string name="decrypt_error_bad_passphrase">Wrong passphrase or corrupted message</string>
+    <string name="decrypt_clear">Clear</string>
+    <string name="decrypt_share">Share</string>
+    <string name="decrypt_send">Send</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Dark Message v%1$s</string>
+    <string name="settings_description">Fully offline encrypted messaging app. No internet required and no data is transmitted.</string>
+    <string name="settings_encryption">Encryption: AES-256-GCM</string>
+    <string name="settings_kdf">Key derivation: PBKDF2-HMAC-SHA512 (600,000 iterations)</string>
+    <string name="settings_no_network">No network permissions</string>
+    <string name="settings_howto">How to use</string>
+    <string name="settings_supported_docs">Supported document formats</string>
+    <string name="settings_doc_formats">PDF, Word (DOC/DOCX), Excel (XLS/XLSX), PowerPoint (PPT/PPTX), TXT, RTF, CSV, XML, JSON, ZIP, RAR, 7Z</string>
+
+    <!-- Detailed instructions in Settings -->
+    <string name="settings_instr_title">Detailed instructions</string>
+    <string name="settings_instr_overview_title">What is Dark Message?</string>
+    <string name="settings_instr_overview">Dark Message is a fully offline app for encrypting messages, photos, and documents. It does not require internet access and never transmits any data. You encrypt content locally, then send the encrypted text or file through any messenger or email. The recipient decrypts it in the same app using the same passphrase.</string>
+
+    <string name="settings_instr_step1_title">Step 1: Create a chat</string>
+    <string name="settings_instr_step1_1">Open the \"Chats\" tab (first tab at the bottom).</string>
+    <string name="settings_instr_step1_2">Press the + button in the bottom-right corner.</string>
+    <string name="settings_instr_step1_3">Enter the contact name (e.g. \"Alice\").</string>
+    <string name="settings_instr_step1_4">Enter a passphrase — a secret key that both you and your contact must know. You can type your own or press \"Generate key\" for a random secure key.</string>
+    <string name="settings_instr_step1_5">Press \"Create\". The chat appears in the list.</string>
+    <string name="settings_instr_step1_6">IMPORTANT: Share the passphrase with your contact in person or through a different secure channel. Both users must enter exactly the same passphrase.</string>
+
+    <string name="settings_instr_step2_title">Step 2: Encrypt a message</string>
+    <string name="settings_instr_step2_1">Go to the \"Encrypt\" tab (second tab).</string>
+    <string name="settings_instr_step2_2">Select the chat from the dropdown at the top.</string>
+    <string name="settings_instr_step2_3">Choose the content type: Text, Photo, or Document.</string>
+    <string name="settings_instr_step2_4">For Text: type your message in the text field.</string>
+    <string name="settings_instr_step2_5">For Photo: press \"Select image\" and pick a photo from your gallery.</string>
+    <string name="settings_instr_step2_6">For Document: press \"Select document\" and pick any file (PDF, Word, Excel, etc.).</string>
+    <string name="settings_instr_step2_7">Press the \"Encrypt\" button.</string>
+    <string name="settings_instr_step2_8">For text: the encrypted message appears as Base64 text. Press \"Copy\" or the send button to share it via any messenger.</string>
+    <string name="settings_instr_step2_9">For photos and documents: a .darkm file is created. Press \"Send .darkm file\" to share it through any app.</string>
+
+    <string name="settings_instr_step3_title">Step 3: Send the encrypted message</string>
+    <string name="settings_instr_step3_1">After encrypting text: press the send button (arrow icon) — the app chooser opens, select a messenger to send the encrypted text.</string>
+    <string name="settings_instr_step3_2">After encrypting a photo or document: press \"Send .darkm file\" — the file chooser opens, send the .darkm file through any app.</string>
+    <string name="settings_instr_step3_3">You can also copy the text manually and paste it into any chat.</string>
+
+    <string name="settings_instr_step4_title">Step 4: Decrypt a message</string>
+    <string name="settings_instr_step4_1">Go to the \"Decrypt\" tab (third tab).</string>
+    <string name="settings_instr_step4_2">Select the chat from the dropdown (the same chat your contact used to encrypt).</string>
+    <string name="settings_instr_step4_3">Choose \"Paste text\" or \"Import file\".</string>
+    <string name="settings_instr_step4_4">For text: paste the encrypted Base64 text (use \"Paste from clipboard\" or paste manually).</string>
+    <string name="settings_instr_step4_5">For files: press \"Select .darkm file\" and pick the received file.</string>
+    <string name="settings_instr_step4_6">Press \"Decrypt\".</string>
+    <string name="settings_instr_step4_7">The original message, photo, or document will appear. You can copy, save, or share the result.</string>
+
+    <string name="settings_instr_tips_title">Tips</string>
+    <string name="settings_instr_tip1">The longer the passphrase, the stronger the encryption. Use at least 8 characters or generate a random key.</string>
+    <string name="settings_instr_tip2">The app uses AES-256-GCM encryption with PBKDF2-HMAC-SHA512 key derivation (600,000 iterations).</string>
+    <string name="settings_instr_tip3">If decryption fails with \"Wrong passphrase\", make sure both users have the exact same passphrase.</string>
+    <string name="settings_instr_tip4">To delete a chat, long-press it in the chat list and confirm.</string>
+    <string name="settings_instr_tip5">The app has no internet permissions — your data never leaves your device unless you share it yourself.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Welcome to Dark Message</string>
+    <string name="onboarding_welcome_desc">Encrypt your messages, photos, and documents completely offline. No internet needed.</string>
+    <string name="onboarding_step1_title">Create a chat</string>
+    <string name="onboarding_step1_desc">First, create a chat and set a passphrase. Share this passphrase with your contact in person.</string>
+    <string name="onboarding_step2_title">Encrypt</string>
+    <string name="onboarding_step2_desc">Select the chat, type a message or choose a file, then press \"Encrypt\". Copy the result or send it as a .darkm file.</string>
+    <string name="onboarding_step3_title">Send</string>
+    <string name="onboarding_step3_desc">Send the encrypted text or file through any messenger or email.</string>
+    <string name="onboarding_step4_title">Decrypt</string>
+    <string name="onboarding_step4_desc">Your contact pastes the text or imports the .darkm file, selects the same chat, and presses \"Decrypt\".</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_skip">Skip</string>
+
+    <!-- Tutorial overlay -->
+    <string name="tutorial_step1_title">Chats</string>
+    <string name="tutorial_step1_desc">Start here! Create a chat with a contact and set a shared passphrase.</string>
+    <string name="tutorial_step2_title">Encrypt</string>
+    <string name="tutorial_step2_desc">Select a chat, type a message or pick a file, and encrypt it.</string>
+    <string name="tutorial_step3_title">Decrypt</string>
+    <string name="tutorial_step3_desc">Paste encrypted text or import a .darkm file, then decrypt.</string>
+    <string name="tutorial_step4_title">Settings</string>
+    <string name="tutorial_step4_desc">Change theme, language, and read detailed instructions here.</string>
+    <string name="tutorial_got_it">Got it</string>
+    <string name="tutorial_next">Next</string>
+
+    <!-- General -->
+    <string name="error">Error: %1$s</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- QR chat key exchange -->
+    <string name="qr_show">Show QR code</string>
+    <string name="qr_scan">Scan QR code</string>
+    <string name="qr_share_title">Share chat via QR</string>
+    <string name="qr_sender_name">Your name (shown to contact)</string>
+    <string name="qr_sender_name_hint">Optional. Your contact can change it.</string>
+    <string name="qr_show_warning">The QR code contains the encrypted passphrase of this chat; the PIN unlocks it. Show the code and tell the PIN only to your contact, in person. Never send the QR code as a picture.</string>
+    <string name="qr_show_button">Show code</string>
+    <string name="qr_show_again">Show again</string>
+    <string name="qr_new_code">New code</string>
+    <string name="qr_show_pin">Show PIN</string>
+    <string name="qr_show_code_back">Back to code</string>
+    <string name="qr_pin_label">PIN</string>
+    <string name="qr_pin_tell_hint">Tell the PIN to your contact in person. It is never shown together with the code.</string>
+    <string name="qr_code_hint">Ask your contact to open Dark Message → Chats → Scan QR code, then enter the PIN.</string>
+    <string name="qr_hides_in">Code hides in %1$d s</string>
+    <string name="qr_pin_hides_in">PIN hides in %1$d s</string>
+    <string name="qr_hidden">Code hidden</string>
+    <string name="qr_hidden_capture">Hidden while the screen is being recorded or mirrored</string>
+    <string name="qr_hidden_screenshot">A screenshot was taken. This code is cancelled — create a new one.</string>
+    <string name="qr_expired">Code expired</string>
+    <string name="qr_fingerprint">Key fingerprint: %1$s</string>
+    <string name="qr_fingerprint_hint">Your contact must see the same fingerprint.</string>
+    <string name="qr_done">Done</string>
+    <string name="qr_error_passphrase_too_long">The passphrase is too long for a QR code (max 128 bytes). Share it another way.</string>
+    <string name="qr_scan_title">Scan QR code</string>
+    <string name="qr_scan_hint">Point the camera at the QR code on your contact\'s screen</string>
+    <string name="qr_torch">Flashlight</string>
+    <string name="qr_scan_from_photo">Choose from photos</string>
+    <string name="qr_error_not_darkmessage">This is not a Dark Message code</string>
+    <string name="qr_error_version">This code was created by a newer version of Dark Message. Please update the app.</string>
+    <string name="qr_error_malformed">The code is damaged or invalid. Ask your contact to show a new one.</string>
+    <string name="qr_error_no_qr_in_photo">No QR code found in this image</string>
+    <string name="qr_camera_denied_title">Camera access needed</string>
+    <string name="qr_camera_denied_body">Dark Message uses the camera only to scan QR codes. Allow camera access in Settings, or enter the passphrase manually.</string>
+    <string name="qr_open_settings">Open Settings</string>
+    <string name="qr_enter_manually">Enter manually</string>
+    <string name="qr_no_camera">No camera available on this device</string>
+    <string name="qr_pin_title">Enter PIN</string>
+    <string name="qr_pin_enter_hint">Enter the 6-digit PIN your contact tells you</string>
+    <string name="qr_pin_continue">Continue</string>
+    <string name="qr_pin_checking">Checking…</string>
+    <string name="qr_pin_wrong">Wrong PIN. Attempts left: %1$d</string>
+    <string name="qr_pin_locked">Too many attempts. Scan the code again.</string>
+    <string name="qr_confirm_title">Add chat from QR code?</string>
+    <string name="qr_confirm_body">The passphrase will be saved on this device. Check the name and the fingerprint with your contact.</string>
+    <string name="qr_confirm_add">Add chat</string>
+    <string name="qr_confirm_update_existing">Update key of existing chat</string>
+    <string name="qr_confirm_update_title">Replace passphrase?</string>
+    <string name="qr_confirm_update_body">The passphrase of chat \"%1$s\" will be replaced. Messages encrypted with the old passphrase can no longer be decrypted in this chat.</string>
+    <string name="qr_conflict_renamed">You already have a chat named \"%1$s\". The new chat will be named \"%2$s\".</string>
+    <string name="qr_same_key_exists">Chat \"%1$s\" already uses this passphrase.</string>
+    <string name="qr_added">Chat \"%1$s\" added</string>
+    <string name="qr_updated">Passphrase of chat \"%1$s\" updated</string>
+    <string name="qr_a11y_qr_image">QR code with the encrypted chat key</string>
+    <string name="qr_howto_step">Or pass the passphrase in person by QR code: open the chat\'s menu → \"Show QR code\". Your contact taps the scan icon in Chats, scans the code and enters the PIN you tell them.</string>
+    <string name="chats_fingerprint">Key %1$s</string>
+</resources>

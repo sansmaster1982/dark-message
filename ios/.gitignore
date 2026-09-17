@@ -1,0 +1,51 @@
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+Packages/
+
+# CocoaPods
+Pods/
+
+# OS
+.DS_Store
+*.swp
+*~
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Signing material and secrets - never committed, only ever live as GitHub
+# Actions encrypted secrets. Found missing here during the pre-publish audit.
+*.mobileprovision
+*.p12
+*.pfx
+*.cer
+*.certSigningRequest
+*.p8
+AuthKey_*.p8
+ExportOptions.plist
+.env
+.env.*
