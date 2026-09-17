@@ -103,6 +103,7 @@ darkmessage://chat/1/<base64url без выравнивания>
 ```
 android/    Kotlin, Jetpack Compose, Material 3   (minSdk 26, targetSdk 35)
 ios/        Swift, SwiftUI                        (iOS 17+, iPhone и iPad)
+design/     мастер-файл иконки и скрипт, который режет все размеры для обоих приложений
 ```
 
 У приложений нет общего кода — у них общий *формат* и набор тестов на каждой стороне,

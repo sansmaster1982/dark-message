@@ -103,6 +103,7 @@ and the code disappears after a minute.
 ```
 android/    Kotlin, Jetpack Compose, Material 3   (minSdk 26, targetSdk 35)
 ios/        Swift, SwiftUI                        (iOS 17+, iPhone and iPad)
+design/     the app-icon master and the script that cuts every icon size for both apps
 ```
 
 The two apps share no code — they share a *format*, and a test suite on each side that
