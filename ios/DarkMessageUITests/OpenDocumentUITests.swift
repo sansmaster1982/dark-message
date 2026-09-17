@@ -120,8 +120,7 @@ final class OpenDocumentUITests: XCTestCase {
         let name = app.textFields.firstMatch
         XCTAssertTrue(name.waitForExistence(timeout: 10),
                       "the new-chat sheet never opened\n\(hierarchy())")
-        name.tap()
-        name.typeText(chatName)
+        type(chatName, into: name, called: "contact name")
 
         // Reveal the passphrase before typing it. A SecureField cannot be read back,
         // and a key that half arrived looks exactly like a key that never saved -
@@ -135,8 +134,7 @@ final class OpenDocumentUITests: XCTestCase {
             ? app.textFields.element(boundBy: 1)
             : app.secureTextFields.firstMatch
         XCTAssertTrue(pass.waitForExistence(timeout: 5), "no passphrase field\n\(hierarchy())")
-        pass.tap()
-        pass.typeText(passphrase)
+        type(passphrase, into: pass, called: "passphrase")
         XCTAssertEqual(pass.value as? String, passphrase,
                        "the passphrase field did not take what was typed")
 
@@ -156,15 +154,41 @@ final class OpenDocumentUITests: XCTestCase {
     private func enterThePayload() {
         let editor = app.textViews.firstMatch
         XCTAssertTrue(editor.waitForExistence(timeout: 10), "the paste field is missing")
-        editor.tap()
         let text = payloadBase64.replacingOccurrences(of: "\n", with: "")
-        editor.typeText(text)
+        type(text, into: editor, called: "payload field")
 
         // Typing hundreds of characters into a TextEditor can drop some, and a
         // base64 payload one character short only ever says "wrong passphrase".
         let typed = (editor.value as? String) ?? ""
         XCTAssertEqual(typed.count, text.count,
                        "the field did not take the whole payload (\(typed.count) of \(text.count))")
+    }
+
+    /// Taps a field, waits for the keyboard to actually take focus, and only then types.
+    ///
+    /// `tap()` returns as soon as the touch is delivered, not when the field has become
+    /// first responder, so typing immediately after it is a race. When it is lost
+    /// XCUITest fails with "Neither element nor any descendant has keyboard focus" -
+    /// which is what happened on run 35256018034 while the identical test had passed
+    /// ten minutes earlier. A flaky test is worse than no test: it teaches you to
+    /// ignore a red build.
+    private func type(_ text: String, into field: XCUIElement, called name: String,
+                      file: StaticString = #filePath, line: UInt = #line) {
+        for attempt in 1...2 {
+            field.tap()
+            // The keyboard appearing is the observable proof that some field took focus.
+            if app.keyboards.element.waitForExistence(timeout: 10) {
+                field.typeText(text)
+                return
+            }
+            if attempt == 1 {
+                // Something else may hold focus - dismiss and come back to it.
+                if app.toolbars.buttons.count > 0 {
+                    app.toolbars.buttons.firstMatch.tap()
+                }
+            }
+        }
+        XCTFail("the keyboard never appeared for the \(name)\n\(hierarchy())", file: file, line: line)
     }
 
     private func chooseTheChat() {
