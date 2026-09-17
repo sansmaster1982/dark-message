@@ -66,13 +66,65 @@ internal fun hasUsableExtension(name: String): Boolean =
  * is worse than none. Kept in step with iOS `DecryptView.guessedExtension`.
  */
 internal fun guessedExtension(bytes: ByteArray): String? {
+    signatureOf(bytes, 0)?.let { return it }
+    // Nothing recognisable at byte 0. A transport that treated the attachment as text may have
+    // glued a CR LF or a byte order mark to the FRONT OF THE FILE, exactly as it does to the
+    // payload - a .darkm was observed arriving with "0D 0A" in front of its version byte, and
+    // the document inside the very same delivery carries the same two bytes. Look again past it.
+    val skip = transportJunkLength(bytes)
+    return if (skip > 0) signatureOf(bytes, skip) else null
+}
+
+/** Leading bytes added by something that mistook the file for text. Kept in step with iOS. */
+internal const val MAX_TRANSPORT_JUNK = 16
+
+/**
+ * How many leading bytes were added by a transport, not by whoever made the file.
+ *
+ * Zero unless dropping them reveals a format we recognise: without that proof these are the
+ * file's own bytes and must not be touched.
+ */
+internal fun transportJunkLength(bytes: ByteArray): Int {
+    if (signatureOf(bytes, 0) != null) return 0
+
+    var skip = 0
+    if (bytes.size >= 3 &&
+        (bytes[0].toInt() and 0xFF) == 0xEF &&
+        (bytes[1].toInt() and 0xFF) == 0xBB &&
+        (bytes[2].toInt() and 0xFF) == 0xBF
+    ) {
+        skip = 3                                                    // UTF-8 byte order mark
+    }
+    val whitespace = setOf(0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x20)
+    while (skip < minOf(bytes.size, MAX_TRANSPORT_JUNK) && (bytes[skip].toInt() and 0xFF) in whitespace) {
+        skip++
+    }
+    if (skip == 0) return 0
+    return if (signatureOf(bytes, skip) != null) skip else 0
+}
+
+/**
+ * The document as the sender meant it, with any such junk taken off the front.
+ *
+ * Naming it correctly is not enough for every format. A PDF tolerates bytes before its header -
+ * the spec says so - but a .docx is a ZIP, and a ZIP with two bytes in front of "PK" is simply
+ * not a ZIP: Word refuses to open it. So the bytes are repaired, not just relabelled.
+ */
+internal fun repairedDocument(bytes: ByteArray): ByteArray {
+    val skip = transportJunkLength(bytes)
+    return if (skip > 0) bytes.copyOfRange(skip, bytes.size) else bytes
+}
+
+/** The magic-number table, asked at a given offset. */
+private fun signatureOf(bytes: ByteArray, origin: Int): String? {
     fun b(index: Int): Int = bytes[index].toInt() and 0xFF
     fun starts(vararg magic: Int, offset: Int = 0): Boolean {
-        if (bytes.size < offset + magic.size) return false
-        return magic.indices.all { b(offset + it) == magic[it] }
+        val from = origin + offset
+        if (bytes.size < from + magic.size) return false
+        return magic.indices.all { b(from + it) == magic[it] }
     }
 
-    val head = bytes.copyOfRange(0, minOf(bytes.size, 8192))
+    val head = bytes.copyOfRange(minOf(origin, bytes.size), minOf(bytes.size, origin + 8192))
     fun contains(text: String): Boolean = indexOfBytes(head, text.toByteArray(Charsets.UTF_8)) >= 0
     // The names inside a legacy Office container are UTF-16, so "Workbook" is stored with a zero
     // byte after every letter. Searching for the plain string misses it.
@@ -85,16 +137,7 @@ internal fun guessedExtension(bytes: ByteArray): String? {
         return indexOfBytes(head, wide) >= 0
     }
 
-    // The PDF spec itself (ISO 32000-1 §7.5.2) does not require "%PDF" at byte 0:
-    // conforming readers scan the first 1024 bytes, because some tools and some
-    // transports prepend a few bytes of their own. A real sample from the field - a
-    // document sent Android to iPhone through Dark Message - arrived as two stray
-    // bytes (a CR LF) glued in front of an otherwise perfectly intact PDF, and an
-    // offset-0 check alone missed it, exactly reproducing "the extension is gone" on
-    // a file that was never actually damaged. Kept in step with iOS.
-    if (indexOfBytes(bytes.copyOfRange(0, minOf(bytes.size, 1024)), byteArrayOf(0x25, 0x50, 0x44, 0x46)) >= 0) {
-        return "pdf"                                                    // %PDF
-    }
+    if (starts(0x25, 0x50, 0x44, 0x46)) return "pdf"                    // %PDF
     if (starts(0xFF, 0xD8, 0xFF)) return "jpg"
     if (starts(0x89, 0x50, 0x4E, 0x47)) return "png"
     if (starts(0x47, 0x49, 0x46, 0x38)) return "gif"

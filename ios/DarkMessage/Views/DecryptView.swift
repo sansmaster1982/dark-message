@@ -423,7 +423,11 @@ struct DecryptView: View {
                         }
 
                     case .document:
-                        if let docData = result.documentData {
+                        // Take off anything a transport glued to the front of the file
+                        // itself before it is named or written. Only bytes that were
+                        // demonstrably not the file's own are removed - see
+                        // transportJunkLength.
+                        if let docData = result.documentData.map(Self.repairedDocument) {
                             // The name comes from whoever built the file, so it is never
                             // used as a path as-is (Android does the same in
                             // DecryptViewModel.sanitizeFileName). A name like
@@ -533,11 +537,61 @@ struct DecryptView: View {
     /// alone: without one it shows a grey placeholder with the size and nothing
     /// else, however intact the file is.
     static func guessedExtension(for data: Data) -> String? {
-        func starts(_ bytes: [UInt8], at offset: Int = 0) -> Bool {
-            guard data.count >= offset + bytes.count else { return false }
-            return Array(data.dropFirst(offset).prefix(bytes.count)) == bytes
+        if let ext = signature(of: data, at: 0) { return ext }
+        // Nothing recognisable at byte 0. A transport that treated the attachment as
+        // text may have glued a CR LF or a byte order mark to the FRONT OF THE FILE,
+        // exactly as it does to the payload - a .darkm was observed arriving with
+        // "0D 0A" in front of its version byte, and the document inside the very same
+        // delivery carries the same two bytes. Look again past that junk.
+        let skip = transportJunkLength(in: data)
+        return skip > 0 ? signature(of: data, at: skip) : nil
+    }
+
+    /// How many leading bytes were added by something that mistook the file for text.
+    ///
+    /// Zero unless dropping them reveals a format we recognise: without that proof
+    /// these are the file's own bytes and must not be touched. Bounded, because
+    /// genuine transport damage is a handful of bytes, not a kilobyte.
+    static func transportJunkLength(in data: Data) -> Int {
+        guard signature(of: data, at: 0) == nil else { return 0 }
+
+        var skip = 0
+        if data.count >= 3,
+           data[data.startIndex] == 0xEF,
+           data[data.startIndex + 1] == 0xBB,
+           data[data.startIndex + 2] == 0xBF {
+            skip = 3                                            // UTF-8 byte order mark
         }
-        let head = data.prefix(8192)
+        while skip < min(data.count, maxTransportJunk),
+              PayloadCodec.asciiWhitespace.contains(data[data.startIndex + skip]) {
+            skip += 1
+        }
+        guard skip > 0, signature(of: data, at: skip) != nil else { return 0 }
+        return skip
+    }
+
+    /// The document as the sender meant it, with any such junk taken off the front.
+    ///
+    /// Naming it correctly is not enough for every format. A PDF tolerates bytes
+    /// before its header - the spec says so - but a .docx is a ZIP, and a ZIP with
+    /// two bytes in front of "PK" is simply not a ZIP: Word refuses to open it. The
+    /// owner sends Office files constantly, so leaving the junk in place fixed the
+    /// label and left the file broken.
+    static func repairedDocument(_ data: Data) -> Data {
+        let skip = transportJunkLength(in: data)
+        return skip > 0 ? Data(data.dropFirst(skip)) : data
+    }
+
+    private static let maxTransportJunk = 16
+
+    /// The magic-number table, asked at a given offset.
+    private static func signature(of data: Data, at origin: Int) -> String? {
+        func starts(_ bytes: [UInt8], at offset: Int = 0) -> Bool {
+            let from = origin + offset
+            guard data.count >= from + bytes.count else { return false }
+            return Array(data.dropFirst(from).prefix(bytes.count)) == bytes
+        }
+        let head = data.dropFirst(origin).prefix(8192)
         func contains(_ text: String) -> Bool {
             head.range(of: Data(text.utf8)) != nil
         }
@@ -552,14 +606,7 @@ struct DecryptView: View {
             return head.range(of: wide) != nil
         }
 
-        // The PDF spec itself (ISO 32000-1 §7.5.2) does not require "%PDF" at byte 0:
-        // conforming readers scan the first 1024 bytes, because some tools and some
-        // transports prepend a few bytes of their own. A real sample from the field -
-        // a document sent Android to iPhone through Dark Message - arrived as two
-        // stray bytes (a CR LF) glued in front of an otherwise perfectly intact PDF,
-        // and an offset-0 check alone missed it, exactly reproducing "the extension
-        // is gone" on a file that was never actually damaged.
-        if data.prefix(1024).range(of: Data([0x25, 0x50, 0x44, 0x46])) != nil { return "pdf" } // %PDF
+        if starts([0x25, 0x50, 0x44, 0x46]) { return "pdf" }                  // %PDF
         if starts([0xFF, 0xD8, 0xFF]) { return "jpg" }
         if starts([0x89, 0x50, 0x4E, 0x47]) { return "png" }
         if starts([0x47, 0x49, 0x46, 0x38]) { return "gif" }

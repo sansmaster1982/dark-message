@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.darkmessage.app.R
 import com.darkmessage.app.core.files.documentFileName
+import com.darkmessage.app.core.files.repairedDocument
 import com.darkmessage.app.core.files.sanitizeFileName
 import com.darkmessage.app.crypto.PayloadCodec
 import com.darkmessage.app.crypto.CryptoEngine
@@ -311,10 +312,17 @@ class DecryptViewModel @Inject constructor(
                 val finalResult: DecryptionResult = when (result) {
                     is DecryptionResult.Error -> DecryptionResult.Error(localizeError(result.message))
                     // The file name comes from the (remote) sender: never use it as a path as-is
-                    is DecryptionResult.DocumentMessage -> DecryptionResult.DocumentMessage(
-                        documentBytes = result.documentBytes,
-                        fileName = documentFileName(result.fileName, result.documentBytes)
-                    )
+                    is DecryptionResult.DocumentMessage -> {
+                        // Take off anything a transport glued to the front of the file itself
+                        // before it is named or saved. A PDF tolerates such bytes; a .docx is a
+                        // ZIP and does not - it simply fails to open. Only bytes that were
+                        // demonstrably not the file's own are removed (see transportJunkLength).
+                        val repaired = repairedDocument(result.documentBytes)
+                        DecryptionResult.DocumentMessage(
+                            documentBytes = repaired,
+                            fileName = documentFileName(result.fileName, repaired)
+                        )
+                    }
                     else -> result
                 }
 
