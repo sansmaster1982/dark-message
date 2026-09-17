@@ -7,7 +7,10 @@ name: Build & Upload iOS to App Store
 # Kotlin-only change either.
 on:
   push:
-    branches: [master]
+    # main, not master: this repository was created with main as its only branch,
+    # and a trigger naming a branch that does not exist fires silently never - the
+    # first three runs here were all manual dispatches without anyone noticing why.
+    branches: [main]
     paths:
       - "ios/**"
       - ".github/workflows/build-ios.yml"
