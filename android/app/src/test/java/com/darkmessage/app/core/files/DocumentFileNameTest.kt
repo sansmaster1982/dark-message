@@ -1,5 +1,6 @@
 package com.darkmessage.app.core.files
 
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -105,6 +106,66 @@ class DocumentFileNameTest {
         // must not be treated as a PDF that merely arrived stretched.
         val tooFar = ByteArray(1024) + "%PDF-1.3".toByteArray(Charsets.US_ASCII)
         assertNull(guessedExtension(tooFar))
+    }
+
+    @Test
+    fun `a transport that glues CR LF to the front of the file is undone`() {
+        // The real case. A .darkm arrived with 0D 0A in front of its version byte - the
+        // transport treated the attachment as text - and the document INSIDE the same
+        // delivery carries the same two bytes. For a PDF that is survivable; for a .docx
+        // it is fatal, because a ZIP whose first bytes are not "PK" is not a ZIP at all.
+        val docx = officeZip("word/document.xml")
+
+        for (junk in listOf(
+            byteArrayOf(0x0D, 0x0A),                                   // CR LF
+            byteArrayOf(0x0A),                                         // LF alone
+            byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte()),  // UTF-8 BOM
+            byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte(), 0x0D, 0x0A)
+        )) {
+            val damaged = junk + docx
+            assertEquals("junk of ${junk.size} bytes", junk.size, transportJunkLength(damaged))
+            assertEquals("docx", guessedExtension(damaged))
+            assertArrayEquals("the file itself must come back whole", docx, repairedDocument(damaged))
+            assertEquals("document.docx", documentFileName("document", repairedDocument(damaged)))
+        }
+    }
+
+    @Test
+    fun `the same repair works for every format, not just pdf`() {
+        val cases = listOf(
+            "pdf" to pdf,
+            "docx" to officeZip("word/document.xml"),
+            "xlsx" to officeZip("xl/workbook.xml"),
+            "jpg" to jpeg,
+            "xls" to oleDocument("Workbook")
+        )
+        for ((expected, body) in cases) {
+            val damaged = byteArrayOf(0x0D, 0x0A) + body
+            assertEquals(expected, guessedExtension(damaged))
+            assertArrayEquals(body, repairedDocument(damaged))
+        }
+    }
+
+    @Test
+    fun `bytes the file genuinely owns are never stripped`() {
+        // Nothing is removed unless doing so reveals a format we know. A file that simply
+        // begins with a newline and is not recognisable stays exactly as it arrived -
+        // silently eating a user's first bytes would be far worse than a missing extension.
+        val text = byteArrayOf(0x0D, 0x0A) +
+            "Обычный текст, а не повреждение".toByteArray(Charsets.UTF_8)
+        assertEquals(0, transportJunkLength(text))
+        assertArrayEquals(text, repairedDocument(text))
+
+        // And a clean file is untouched.
+        assertEquals(0, transportJunkLength(pdf))
+        assertArrayEquals(pdf, repairedDocument(pdf))
+    }
+
+    @Test
+    fun `junk longer than the bound is not treated as damage`() {
+        val damaged = ByteArray(64) { 0x20 } + pdf      // 64 spaces - beyond MAX_TRANSPORT_JUNK
+        assertEquals(0, transportJunkLength(damaged))
+        assertNull(guessedExtension(damaged))
     }
 
     @Test
