@@ -461,7 +461,9 @@ struct DecryptView: View {
                             let inside = Self.isInside(directory: tempDir, url: fileURL)
                             diag.error("DIAG name=\(safeName, privacy: .public) inside=\(inside, privacy: .public) tmp=\(tempDir.path, privacy: .public)")
                             if !inside {
-                                safeName = "document"
+                                // Even a refused name must not cost the extension: the
+                                // content still says what the file is.
+                                safeName = Self.documentFileName(nil, data: docData)
                                 fileURL = tempDir.appendingPathComponent(safeName)
                             }
                             do {
@@ -740,16 +742,26 @@ struct DecryptView: View {
     /// inside the directory we meant to write to.
     /// True when `url` sits directly inside `directory`.
     ///
-    /// Compares the parent directory rather than matching path prefixes, and does
-    /// NOT resolve symlinks. The first version did resolve them, and that is a trap
-    /// on iOS: the temporary directory really is /var/... which is a symlink to
-    /// /private/var/..., resolvingSymlinksInPath() rewrites the existing directory
-    /// but can leave a not-yet-created file unresolved, and the two paths then stop
-    /// matching. A decrypted document was refused as a bad format for that reason
-    /// alone, while photos, which never take this path, kept working.
+    /// The one rule here: NEVER normalise a path that ends in the file, because the
+    /// file does not exist yet, and every Foundation normalisation consults the file
+    /// system. Two versions of this check fell into that trap from opposite sides,
+    /// and each one passed every simulator test while breaking every document on the
+    /// phone:
+    /// - `resolvingSymlinksInPath()` rewrote the existing directory (/var -> /private/var)
+    ///   and left the not-yet-created file alone, so the two stopped matching;
+    /// - `standardizedFileURL` did the reverse: it strips a leading "/private" ONLY
+    ///   when the result exists. The temporary directory exists and became
+    ///   /var/mobile/.../tmp; the file did not and stayed /private/var/mobile/.../tmp/x.
+    ///   Parent != base, the name fell back to a bare "document", and QuickLook
+    ///   showed a grey placeholder. The simulator's paths never carry /private, which
+    ///   is why 105 tests could not see it.
+    /// So the file's PARENT directory is normalised, which exists, with exactly the same
+    /// calls as the base, and the name itself is checked to be a single component.
     static func isInside(directory: URL, url: URL) -> Bool {
-        let parent = url.standardizedFileURL.deletingLastPathComponent().path
-        let base = directory.standardizedFileURL.path
-        return parent == base && !url.lastPathComponent.isEmpty
+        let name = url.lastPathComponent
+        guard !name.isEmpty, name != ".", name != "..", !name.contains("/") else { return false }
+        let parent = url.deletingLastPathComponent().resolvingSymlinksInPath().standardizedFileURL.path
+        let base = directory.resolvingSymlinksInPath().standardizedFileURL.path
+        return parent == base
     }
 }
