@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dark Message Crypto Chat</string>
+
+    <!-- Navigation -->
+    <string name="nav_chats">Чаты</string>
+    <string name="nav_encrypt">Шифрование</string>
+    <string name="nav_decrypt">Расшифровка</string>
+    <string name="nav_settings">Настройки</string>
+
+    <!-- Chats screen -->
+    <string name="chats_title">Dark Message</string>
+    <string name="chats_empty_title">Нет чатов</string>
+    <string name="chats_empty_subtitle">Нажмите «+», чтобы создать зашифрованный чат</string>
+    <string name="chats_add">Добавить чат</string>
+    <string name="chats_edit">Редактировать</string>
+    <string name="chats_delete">Удалить</string>
+    <string name="chats_new_chat">Новый чат</string>
+    <string name="chats_edit_chat">Редактировать чат</string>
+    <string name="chats_delete_chat">Удалить чат</string>
+    <string name="chats_delete_confirm">Удалить чат \"%1$s\"? Пароль-фраза будет удалена безвозвратно.</string>
+    <string name="chats_contact_name">Имя контакта</string>
+    <string name="chats_passphrase">Пароль-фраза</string>
+    <string name="chats_passphrase_hint">Оба пользователя должны ввести одинаковую фразу</string>
+    <string name="chats_create">Создать</string>
+    <string name="chats_save">Сохранить</string>
+    <string name="chats_cancel">Отмена</string>
+    <string name="chats_show">Показать</string>
+    <string name="chats_hide">Скрыть</string>
+    <string name="chats_generate_key">Сгенерировать ключ</string>
+    <string name="chats_error_key_not_saved">Не удалось сохранить ключ. Чат не создан.</string>
+
+    <!-- Chat selector (Encrypt / Decrypt screens) -->
+    <string name="chat_selector_placeholder">Выберите чат</string>
+    <string name="chat_selector_label">Чат</string>
+    <string name="chat_selector_empty">Нет чатов. Создайте чат во вкладке \"Чаты\"</string>
+
+    <!-- Encrypt screen -->
+    <string name="encrypt_title">Шифрование</string>
+    <string name="encrypt_text">Текст</string>
+    <string name="encrypt_photo">Фото</string>
+    <string name="encrypt_document">Документ</string>
+    <string name="encrypt_message">Сообщение</string>
+    <string name="encrypt_select_image">Выбрать изображение</string>
+    <string name="encrypt_select_document">Выбрать документ</string>
+    <string name="encrypt_button">Зашифровать</string>
+    <string name="encrypt_encrypting">Шифрование…</string>
+    <string name="encrypt_success">Зашифровано!</string>
+    <string name="encrypt_copy">Копировать</string>
+    <string name="encrypt_share">Поделиться</string>
+    <string name="encrypt_send">Отправить</string>
+    <string name="encrypt_send_file">Отправить .darkm файл</string>
+    <string name="encrypt_or">или</string>
+    <string name="encrypt_copied">Скопировано в буфер</string>
+    <string name="encrypt_send_to">Отправить…</string>
+    <string name="encrypt_send_file_to">Отправить файл…</string>
+    <string name="encrypt_error_no_passphrase">Пароль-фраза не найдена для этого чата</string>
+    <string name="encrypt_error_empty_text">Введите текст для шифрования</string>
+    <string name="encrypt_error_no_image">Выберите изображение</string>
+    <string name="encrypt_error_no_document">Выберите документ</string>
+    <string name="encrypt_error_read_image">Не удалось прочитать изображение</string>
+    <string name="encrypt_error_read_document">Не удалось прочитать документ</string>
+    <string name="encrypt_error">Ошибка шифрования: %1$s</string>
+    <string name="encrypt_clear">Очистить</string>
+    <string name="encrypt_document_selected">Документ: %1$s</string>
+
+    <!-- Decrypt screen -->
+    <string name="decrypt_title">Расшифровка</string>
+    <string name="decrypt_paste_text">Вставить текст</string>
+    <string name="decrypt_import_file">Импорт файла</string>
+    <string name="decrypt_input_label">Зашифрованный текст (Base64)</string>
+    <string name="decrypt_paste_clipboard">Вставить из буфера</string>
+    <string name="decrypt_select_file">Выбрать .darkm файл</string>
+    <string name="decrypt_file_selected">Файл выбран</string>
+    <string name="decrypt_file_received">Файл получен — выберите чат и нажмите Расшифровать</string>
+    <string name="decrypt_button">Расшифровать</string>
+    <string name="decrypt_decrypting">Расшифровка…</string>
+    <string name="decrypt_result_text">Расшифрованное сообщение:</string>
+    <string name="decrypt_result_image">Расшифрованное изображение:</string>
+    <string name="decrypt_result_document">Расшифрованный документ:</string>
+    <string name="decrypt_copy">Копировать</string>
+    <string name="decrypt_copied">Скопировано</string>
+    <string name="decrypt_save_gallery">В галерею</string>
+    <string name="decrypt_save_document">Сохранить</string>
+    <string name="decrypt_saved_gallery">Сохранено в галерею</string>
+    <string name="decrypt_saved_document">Документ сохранён</string>
+    <string name="decrypt_error_save">Ошибка сохранения</string>
+    <string name="decrypt_image_error">Не удалось отобразить изображение</string>
+    <string name="decrypt_error_no_passphrase">Пароль-фраза не найдена для этого чата</string>
+    <string name="decrypt_error_empty_text">Вставьте зашифрованный текст</string>
+    <string name="decrypt_error_bad_base64">Неверный формат Base64</string>
+    <string name="decrypt_error_no_file">Выберите .darkm файл</string>
+    <string name="decrypt_error_read_file">Не удалось прочитать файл</string>
+    <string name="decrypt_error">Ошибка расшифровки: %1$s</string>
+    <string name="decrypt_error_format">Неверный формат данных</string>
+    <string name="decrypt_error_bad_passphrase">Неверная пароль-фраза или повреждённое сообщение</string>
+    <string name="decrypt_clear">Очистить</string>
+    <string name="decrypt_share">Поделиться</string>
+    <string name="decrypt_send">Отправить</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_theme">Тема оформления</string>
+    <string name="settings_theme_dark">Тёмная</string>
+    <string name="settings_theme_light">Светлая</string>
+    <string name="settings_theme_system">Как в системе</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_about">О приложении</string>
+    <string name="settings_version">Dark Message v%1$s</string>
+    <string name="settings_description">Полностью офлайн-приложение для шифрования сообщений. Не требует интернета и не передаёт данные.</string>
+    <string name="settings_encryption">Шифрование: AES-256-GCM</string>
+    <string name="settings_kdf">Деривация ключа: PBKDF2-HMAC-SHA512 (600 000 итераций)</string>
+    <string name="settings_no_network">Без сетевых разрешений</string>
+    <string name="settings_howto">Как пользоваться</string>
+    <string name="settings_supported_docs">Поддерживаемые форматы документов</string>
+    <string name="settings_doc_formats">PDF, Word (DOC/DOCX), Excel (XLS/XLSX), PowerPoint (PPT/PPTX), TXT, RTF, CSV, XML, JSON, ZIP, RAR, 7Z</string>
+
+    <!-- Detailed instructions in Settings -->
+    <string name="settings_instr_title">Подробная инструкция</string>
+    <string name="settings_instr_overview_title">Что такое Dark Message?</string>
+    <string name="settings_instr_overview">Dark Message — полностью офлайн-приложение для шифрования сообщений, фото и документов. Оно не требует интернета и никогда не передаёт данные. Вы шифруете контент локально, затем отправляете зашифрованный текст или файл через любой мессенджер или почту. Получатель расшифровывает его в этом же приложении, используя ту же пароль-фразу.</string>
+
+    <string name="settings_instr_step1_title">Шаг 1: Создайте чат</string>
+    <string name="settings_instr_step1_1">Откройте вкладку \"Чаты\" (первая вкладка внизу).</string>
+    <string name="settings_instr_step1_2">Нажмите кнопку + в правом нижнем углу.</string>
+    <string name="settings_instr_step1_3">Введите имя контакта (например, \"Алиса\").</string>
+    <string name="settings_instr_step1_4">Введите пароль-фразу — секретный ключ, который должны знать вы и ваш собеседник. Можно ввести свой или нажать \"Сгенерировать ключ\" для создания случайного надёжного ключа.</string>
+    <string name="settings_instr_step1_5">Нажмите \"Создать\". Чат появится в списке.</string>
+    <string name="settings_instr_step1_6">ВАЖНО: Передайте пароль-фразу собеседнику лично или через другой безопасный канал. Оба пользователя должны ввести абсолютно одинаковую фразу.</string>
+
+    <string name="settings_instr_step2_title">Шаг 2: Зашифруйте сообщение</string>
+    <string name="settings_instr_step2_1">Перейдите на вкладку \"Шифрование\" (вторая вкладка).</string>
+    <string name="settings_instr_step2_2">Выберите чат из выпадающего списка вверху.</string>
+    <string name="settings_instr_step2_3">Выберите тип контента: Текст, Фото или Документ.</string>
+    <string name="settings_instr_step2_4">Для текста: введите сообщение в текстовое поле.</string>
+    <string name="settings_instr_step2_5">Для фото: нажмите \"Выбрать изображение\" и выберите фото из галереи.</string>
+    <string name="settings_instr_step2_6">Для документа: нажмите \"Выбрать документ\" и выберите любой файл (PDF, Word, Excel и т.д.).</string>
+    <string name="settings_instr_step2_7">Нажмите кнопку \"Зашифровать\".</string>
+    <string name="settings_instr_step2_8">Для текста: зашифрованное сообщение появится в виде Base64 текста. Нажмите \"Копировать\" или кнопку отправки, чтобы поделиться через мессенджер.</string>
+    <string name="settings_instr_step2_9">Для фото и документов: создаётся .darkm файл. Нажмите \"Отправить .darkm файл\", чтобы поделиться через любое приложение.</string>
+
+    <string name="settings_instr_step3_title">Шаг 3: Отправьте зашифрованное сообщение</string>
+    <string name="settings_instr_step3_1">После шифрования текста: нажмите кнопку отправки (значок стрелки) — откроется выбор приложения, выберите мессенджер для отправки.</string>
+    <string name="settings_instr_step3_2">После шифрования фото или документа: нажмите \"Отправить .darkm файл\" — откроется выбор приложения для отправки файла.</string>
+    <string name="settings_instr_step3_3">Также можно скопировать текст вручную и вставить его в любой чат.</string>
+
+    <string name="settings_instr_step4_title">Шаг 4: Расшифруйте сообщение</string>
+    <string name="settings_instr_step4_1">Перейдите на вкладку \"Расшифровка\" (третья вкладка).</string>
+    <string name="settings_instr_step4_2">Выберите чат из списка (тот же чат, который использовал отправитель).</string>
+    <string name="settings_instr_step4_3">Выберите \"Вставить текст\" или \"Импорт файла\".</string>
+    <string name="settings_instr_step4_4">Для текста: вставьте зашифрованный Base64 текст (используйте \"Вставить из буфера\" или вставьте вручную).</string>
+    <string name="settings_instr_step4_5">Для файлов: нажмите \"Выбрать .darkm файл\" и выберите полученный файл.</string>
+    <string name="settings_instr_step4_6">Нажмите \"Расшифровать\".</string>
+    <string name="settings_instr_step4_7">Исходное сообщение, фото или документ появится на экране. Можно скопировать, сохранить или поделиться результатом.</string>
+
+    <string name="settings_instr_tips_title">Советы</string>
+    <string name="settings_instr_tip1">Чем длиннее пароль-фраза, тем надёжнее шифрование. Используйте минимум 8 символов или сгенерируйте случайный ключ.</string>
+    <string name="settings_instr_tip2">Приложение использует шифрование AES-256-GCM с деривацией ключа PBKDF2-HMAC-SHA512 (600 000 итераций).</string>
+    <string name="settings_instr_tip3">Если расшифровка не удалась с ошибкой \"Неверная пароль-фраза\", убедитесь, что оба пользователя ввели абсолютно одинаковую фразу.</string>
+    <string name="settings_instr_tip4">Чтобы удалить чат, удерживайте его в списке чатов и подтвердите удаление.</string>
+    <string name="settings_instr_tip5">У приложения нет разрешений на интернет — ваши данные никогда не покидают устройство, пока вы сами их не отправите.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Добро пожаловать в Dark Message</string>
+    <string name="onboarding_welcome_desc">Шифруйте сообщения, фото и документы полностью офлайн. Интернет не нужен.</string>
+    <string name="onboarding_step1_title">Создайте чат</string>
+    <string name="onboarding_step1_desc">Сначала создайте чат и задайте пароль-фразу. Передайте эту фразу собеседнику лично.</string>
+    <string name="onboarding_step2_title">Зашифруйте</string>
+    <string name="onboarding_step2_desc">Выберите чат, введите сообщение или выберите файл, затем нажмите \"Зашифровать\". Скопируйте результат или отправьте как .darkm файл.</string>
+    <string name="onboarding_step3_title">Отправьте</string>
+    <string name="onboarding_step3_desc">Отправьте зашифрованный текст или файл через любой мессенджер или почту.</string>
+    <string name="onboarding_step4_title">Расшифруйте</string>
+    <string name="onboarding_step4_desc">Собеседник вставляет текст или импортирует .darkm файл, выбирает тот же чат и нажимает \"Расшифровать\".</string>
+    <string name="onboarding_get_started">Начать</string>
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_skip">Пропустить</string>
+
+    <!-- Tutorial overlay -->
+    <string name="tutorial_step1_title">Чаты</string>
+    <string name="tutorial_step1_desc">Начните здесь! Создайте чат с контактом и задайте общую пароль-фразу.</string>
+    <string name="tutorial_step2_title">Шифрование</string>
+    <string name="tutorial_step2_desc">Выберите чат, введите сообщение или выберите файл, и зашифруйте.</string>
+    <string name="tutorial_step3_title">Расшифровка</string>
+    <string name="tutorial_step3_desc">Вставьте зашифрованный текст или импортируйте .darkm файл, затем расшифруйте.</string>
+    <string name="tutorial_step4_title">Настройки</string>
+    <string name="tutorial_step4_desc">Измените тему, язык и прочитайте подробную инструкцию здесь.</string>
+    <string name="tutorial_got_it">Понятно</string>
+    <string name="tutorial_next">Далее</string>
+
+    <!-- General -->
+    <string name="error">Ошибка: %1$s</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+
+    <!-- QR chat key exchange -->
+    <string name="qr_show">Показать QR-код</string>
+    <string name="qr_scan">Сканировать QR-код</string>
+    <string name="qr_share_title">Передать чат по QR</string>
+    <string name="qr_sender_name">Ваше имя (увидит контакт)</string>
+    <string name="qr_sender_name_hint">Необязательно. Контакт сможет изменить.</string>
+    <string name="qr_show_warning">QR-код содержит зашифрованную пароль-фразу этого чата; PIN-код её открывает. Показывайте код и сообщайте PIN-код только своему контакту лично. Никогда не отправляйте QR-код картинкой.</string>
+    <string name="qr_show_button">Показать код</string>
+    <string name="qr_show_again">Показать снова</string>
+    <string name="qr_new_code">Новый код</string>
+    <string name="qr_show_pin">Показать PIN-код</string>
+    <string name="qr_show_code_back">Вернуться к коду</string>
+    <string name="qr_pin_label">PIN-код</string>
+    <string name="qr_pin_tell_hint">Сообщите PIN-код контакту лично. Он никогда не показывается вместе с кодом.</string>
+    <string name="qr_code_hint">Попросите контакт открыть Dark Message → Чаты → Сканировать QR-код, затем ввести PIN-код.</string>
+    <string name="qr_hides_in">Код скроется через %1$d с</string>
+    <string name="qr_pin_hides_in">PIN-код скроется через %1$d с</string>
+    <string name="qr_hidden">Код скрыт</string>
+    <string name="qr_hidden_capture">Скрыто, пока экран записывается или транслируется</string>
+    <string name="qr_hidden_screenshot">Сделан снимок экрана. Этот код отменён — создайте новый.</string>
+    <string name="qr_expired">Код истёк</string>
+    <string name="qr_fingerprint">Отпечаток ключа: %1$s</string>
+    <string name="qr_fingerprint_hint">У контакта должен быть такой же отпечаток.</string>
+    <string name="qr_done">Готово</string>
+    <string name="qr_error_passphrase_too_long">Пароль-фраза слишком длинная для QR-кода (макс. 128 байт). Передайте её другим способом.</string>
+    <string name="qr_scan_title">Сканирование QR-кода</string>
+    <string name="qr_scan_hint">Наведите камеру на QR-код на экране контакта</string>
+    <string name="qr_torch">Фонарик</string>
+    <string name="qr_scan_from_photo">Выбрать из галереи</string>
+    <string name="qr_error_not_darkmessage">Это не код Dark Message</string>
+    <string name="qr_error_version">Этот код создан более новой версией Dark Message. Обновите приложение.</string>
+    <string name="qr_error_malformed">Код повреждён или недействителен. Попросите контакт показать новый.</string>
+    <string name="qr_error_no_qr_in_photo">На изображении не найден QR-код</string>
+    <string name="qr_camera_denied_title">Нужен доступ к камере</string>
+    <string name="qr_camera_denied_body">Dark Message использует камеру только для сканирования QR-кодов. Разрешите доступ к камере в настройках или введите пароль-фразу вручную.</string>
+    <string name="qr_open_settings">Открыть настройки</string>
+    <string name="qr_enter_manually">Ввести вручную</string>
+    <string name="qr_no_camera">На этом устройстве нет камеры</string>
+    <string name="qr_pin_title">Введите PIN-код</string>
+    <string name="qr_pin_enter_hint">Введите 6-значный PIN-код, который сообщит контакт</string>
+    <string name="qr_pin_continue">Продолжить</string>
+    <string name="qr_pin_checking">Проверка…</string>
+    <string name="qr_pin_wrong">Неверный PIN-код. Осталось попыток: %1$d</string>
+    <string name="qr_pin_locked">Слишком много попыток. Отсканируйте код заново.</string>
+    <string name="qr_confirm_title">Добавить чат из QR-кода?</string>
+    <string name="qr_confirm_body">Пароль-фраза будет сохранена на этом устройстве. Сверьте имя и отпечаток с контактом.</string>
+    <string name="qr_confirm_add">Добавить чат</string>
+    <string name="qr_confirm_update_existing">Обновить ключ существующего чата</string>
+    <string name="qr_confirm_update_title">Заменить пароль-фразу?</string>
+    <string name="qr_confirm_update_body">Пароль-фраза чата «%1$s» будет заменена. Сообщения, зашифрованные старой фразой, больше нельзя будет расшифровать в этом чате.</string>
+    <string name="qr_conflict_renamed">У вас уже есть чат «%1$s». Новый чат будет назван «%2$s».</string>
+    <string name="qr_same_key_exists">Чат «%1$s» уже использует эту пароль-фразу.</string>
+    <string name="qr_added">Чат «%1$s» добавлен</string>
+    <string name="qr_updated">Пароль-фраза чата «%1$s» обновлена</string>
+    <string name="qr_a11y_qr_image">QR-код с зашифрованным ключом чата</string>
+    <string name="qr_howto_step">Или передайте пароль-фразу лично по QR-коду: откройте меню чата → «Показать QR-код». Контакт нажимает значок сканирования в «Чатах», сканирует код и вводит PIN-код, который вы ему сообщите.</string>
+    <string name="chats_fingerprint">Ключ %1$s</string>
+</resources>

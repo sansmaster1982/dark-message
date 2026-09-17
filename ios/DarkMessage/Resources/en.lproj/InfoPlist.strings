@@ -1,0 +1,9 @@
+/* System permission dialogs. Follow the DEVICE language (iOS reads these
+   directly), not the in-app language toggle. Keep in sync with Info.plist. */
+
+/* Photo library */
+"NSPhotoLibraryUsageDescription" = "Dark Message needs access to select photos for encryption.";
+"NSPhotoLibraryAddUsageDescription" = "Dark Message needs access to save decrypted photos to your gallery.";
+
+/* Camera (QR codes with chat keys) */
+"NSCameraUsageDescription" = "Dark Message uses the camera only to scan a QR code shown on your contact's screen to set up an encrypted chat. Nothing is recorded, stored or sent.";

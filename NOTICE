@@ -1,0 +1,44 @@
+Dark Message
+Copyright 2026 Aleksandr Bronnikov
+
+This product includes software developed by the Dark Message project.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+--------------------------------------------------------------------------------
+Third-party components
+--------------------------------------------------------------------------------
+
+The iOS app has no third-party dependencies. It uses only Apple system
+frameworks (SwiftUI, Foundation, UIKit, CryptoKit, CommonCrypto, Security,
+CoreImage, AVFoundation, QuickLook, PhotosUI).
+
+The Android app depends on the following, all under the Apache License 2.0:
+
+    AndroidX Compose (BOM), Material 3    Copyright The Android Open Source Project
+    androidx.core:core-ktx                Copyright The Android Open Source Project
+    androidx.appcompat                    Copyright The Android Open Source Project
+    androidx.navigation:navigation-compose Copyright The Android Open Source Project
+    androidx.activity:activity-compose    Copyright The Android Open Source Project
+    androidx.lifecycle                    Copyright The Android Open Source Project
+    androidx.room                         Copyright The Android Open Source Project
+    androidx.datastore                    Copyright The Android Open Source Project
+    androidx.camera (CameraX)             Copyright The Android Open Source Project
+    Dagger / Hilt                         Copyright Google LLC
+    Google Tink                           Copyright Google LLC
+    ZXing core                            Copyright ZXing authors
+    Coil                                  Copyright Coil Contributors
+    kotlinx.coroutines                    Copyright JetBrains s.r.o.
+
+JUnit 4, used only for tests and not shipped in the app, is under the
+Eclipse Public License 1.0.

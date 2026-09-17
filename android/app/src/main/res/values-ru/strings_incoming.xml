@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Экран расшифровки: файл / текст, полученный из другого приложения -->
+    <string name="decrypt_incoming_pick_chat">Получено — выберите чат, чтобы расшифровать</string>
+    <string name="decrypt_incoming_no_chats">Получено — сначала создайте чат с той же пароль-фразой во вкладке «Чаты»</string>
+    <string name="decrypt_incoming_file">Файл: %1$s</string>
+    <string name="decrypt_save_document_unavailable">Нет приложения для сохранения документа</string>
+</resources>
