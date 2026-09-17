@@ -1,4 +1,12 @@
 import SwiftUI
+import os
+
+/// DIAGNOSTIC BUILD. Every decision on the document path is written to the system log,
+/// readable from the owner's iPhone over USB (`pymobiledevice3 syslog live`). The
+/// simulator passes every test and the real phone still shows "document" with no
+/// extension; only the phone itself can say what it computed. Values are marked public
+/// on purpose - a redacted log answers nothing. Remove once the cause is found.
+private let diag = Logger(subsystem: "com.darkmessage.ios", category: "document")
 
 enum DecryptInputMode {
     case pasteText, importFile
@@ -416,6 +424,7 @@ struct DecryptView: View {
                             ?? L("decrypt_error_format")
 
                     case .image:
+                        diag.error("DIAG image startIndex=\(result.data.startIndex, privacy: .public) count=\(result.data.count, privacy: .public)")
                         if let img = UIImage(data: result.data) {
                             decryptedImage = img
                         } else {
@@ -437,10 +446,21 @@ struct DecryptView: View {
                             // A name that cannot be used is never a reason to withhold the
                             // document: Android falls back to showing it without one, and
                             // so does this. Only a failed write is reported as an error.
+                            let raw = result.data
+                            let rawHead = raw.prefix(16).map { String(format: "%02x", $0) }.joined()
+                            diag.error("DIAG plaintext startIndex=\(raw.startIndex, privacy: .public) count=\(raw.count, privacy: .public) head=\(rawHead, privacy: .public)")
+                            diag.error("DIAG documentName=\(result.documentName ?? "<nil>", privacy: .public)")
+                            let unrepaired = result.documentData ?? Data()
+                            let junk = Self.transportJunkLength(in: unrepaired)
+                            let docHead = docData.prefix(16).map { String(format: "%02x", $0) }.joined()
+                            diag.error("DIAG docData count=\(docData.count, privacy: .public) junk=\(junk, privacy: .public) head=\(docHead, privacy: .public) ext=\(Self.guessedExtension(for: docData) ?? "<nil>", privacy: .public)")
+
                             let tempDir = FileManager.default.temporaryDirectory
                             var safeName = Self.documentFileName(result.documentName, data: docData)
                             var fileURL = tempDir.appendingPathComponent(safeName)
-                            if !Self.isInside(directory: tempDir, url: fileURL) {
+                            let inside = Self.isInside(directory: tempDir, url: fileURL)
+                            diag.error("DIAG name=\(safeName, privacy: .public) inside=\(inside, privacy: .public) tmp=\(tempDir.path, privacy: .public)")
+                            if !inside {
                                 safeName = "document"
                                 fileURL = tempDir.appendingPathComponent(safeName)
                             }
@@ -448,7 +468,9 @@ struct DecryptView: View {
                                 try docData.write(to: fileURL, options: .atomic)
                                 decryptedDocName = safeName
                                 decryptedDocURL = fileURL
+                                diag.error("DIAG written=\(fileURL.lastPathComponent, privacy: .public)")
                             } catch {
+                                diag.error("DIAG write FAILED \(error.localizedDescription, privacy: .public)")
                                 errorMessage = L("decrypt_error_save")
                             }
                         } else {

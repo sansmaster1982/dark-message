@@ -43,11 +43,17 @@ struct DecryptionResult {
     /// "document", so one damaged byte in the middle of a name used to throw the whole name
     /// away silently. Java's `String(bytes, UTF_8)` never fails; it substitutes U+FFFD. A name
     /// that arrives damaged should look damaged, not disappear.
+    /// Indexed relative to `data.startIndex`, never by absolute position. A `Data` that is a
+    /// slice of a larger buffer keeps the parent's indices, so `data[0]` on such a slice is
+    /// either the wrong byte or a trap. `PayloadCodec.decode` already indexes relatively;
+    /// this did not - and it is the one place where the photo path (which hands `data` to
+    /// UIImage whole) and the document path (which cuts it up by index) differ.
     var documentName: String? {
         guard contentType == .document, data.count >= 2 else { return nil }
-        let nameLen = Int(data[0]) << 8 | Int(data[1])
+        let i = data.startIndex
+        let nameLen = Int(data[i]) << 8 | Int(data[i + 1])
         guard nameLen > 0, data.count >= 2 + nameLen else { return nil }
-        return String(decoding: data[2..<(2 + nameLen)], as: UTF8.self)
+        return String(decoding: data[(i + 2)..<(i + 2 + nameLen)], as: UTF8.self)
     }
 
     /// A length that does not fit means these bytes are not a name frame at all, and the whole
@@ -56,9 +62,10 @@ struct DecryptionResult {
     var documentData: Data? {
         guard contentType == .document else { return nil }
         guard data.count >= 2 else { return data }
-        let nameLen = Int(data[0]) << 8 | Int(data[1])
+        let i = data.startIndex
+        let nameLen = Int(data[i]) << 8 | Int(data[i + 1])
         guard data.count >= 2 + nameLen else { return data }
-        return Data(data[(2 + nameLen)...])
+        return Data(data[(i + 2 + nameLen)...])
     }
 }
 
