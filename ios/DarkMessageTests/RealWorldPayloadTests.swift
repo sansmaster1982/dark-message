@@ -98,16 +98,25 @@ final class RealWorldPayloadTests: XCTestCase {
         XCTAssertTrue(previewable)
     }
 
-    /// A frame whose declared length cannot fit: the whole plaintext is the file, and the
-    /// two length bytes are then part of it - so "%PDF" sits at offset 2 again.
-    func testAnImpossibleNameLengthStillOpens() async throws {
+    /// A frame whose declared length cannot fit: both platforms agree the bytes are not a
+    /// name frame at all and the whole plaintext is the file - so the two bogus length
+    /// bytes, 0xFF 0xFF, end up in front of "%PDF".
+    ///
+    /// Those are NOT stripped, and that is deliberate. Only leading whitespace and a byte
+    /// order mark are ever removed, because only those are known transport damage; 0xFF is
+    /// as likely to be somebody's data. So the document arrives whole but unnamed, which is
+    /// the honest answer to a frame we cannot parse. An earlier version of this test
+    /// expected "document.pdf" here, from a looser rule that scanned a whole kilobyte for
+    /// the header - that rule labelled a damaged .docx correctly and still left it
+    /// unopenable, which is what this whole change replaced.
+    func testAnImpossibleNameLengthDeliversTheFileUnnamed() async throws {
         let plain = frame(name: Data(), body: pdf, declaredLength: 0xFFFF)
         let result = try await decrypt(plain)
 
         XCTAssertNil(result.documentName)
-        let (name, previewable) = try nameAndPreviewability(result)
-        XCTAssertEqual(name, "document.pdf")
-        XCTAssertTrue(previewable)
+        let body = try XCTUnwrap(result.documentData)
+        XCTAssertEqual(body, plain, "nothing may be lost from a frame we could not read")
+        XCTAssertEqual(DecryptView.documentFileName(result.documentName, data: body), "document")
     }
 
     /// A real name that simply lost its extension somewhere upstream.
@@ -129,15 +138,22 @@ final class RealWorldPayloadTests: XCTestCase {
         XCTAssertTrue(previewable)
     }
 
-    // MARK: - How far in front of the header the junk may sit
+    // MARK: - What counts as junk, and how much of it
 
-    /// The rescue is bounded. Junk longer than the PDF specification's own 1024-byte
-    /// window is not a PDF that merely arrived stretched, and guessing would be a lie.
-    func testJunkBeyondTheSpecWindowIsNotGuessed() {
-        let farOut = Data(repeating: 0x00, count: 1024) + pdf
-        XCTAssertNil(DecryptView.guessedExtension(for: farOut))
+    /// The rescue is narrow on purpose: only what a text-minded transport actually adds,
+    /// and only a little of it.
+    func testOnlyWhitespaceAndAByteOrderMarkCountAsJunk() {
+        // Real damage - removed.
+        XCTAssertEqual(DecryptView.guessedExtension(for: Data([0x0D, 0x0A]) + pdf), "pdf")
+        XCTAssertEqual(DecryptView.guessedExtension(for: Data([0xEF, 0xBB, 0xBF]) + pdf), "pdf")
+        XCTAssertEqual(DecryptView.guessedExtension(for: Data([0x20, 0x09, 0x0A]) + pdf), "pdf")
 
-        let justInside = Data(repeating: 0x00, count: 1000) + pdf
-        XCTAssertEqual(DecryptView.guessedExtension(for: justInside), "pdf")
+        // Arbitrary bytes are somebody's data, not damage - left alone, even though a
+        // header sits right behind them.
+        XCTAssertNil(DecryptView.guessedExtension(for: Data([0xFF, 0xFF]) + pdf))
+        XCTAssertNil(DecryptView.guessedExtension(for: Data([0x00, 0x00]) + pdf))
+
+        // And there is a bound: a kilobyte of spaces is not a transport hiccup.
+        XCTAssertNil(DecryptView.guessedExtension(for: Data(repeating: 0x20, count: 1024) + pdf))
     }
 }
