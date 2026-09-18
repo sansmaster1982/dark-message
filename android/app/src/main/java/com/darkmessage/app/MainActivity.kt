@@ -10,9 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -142,26 +147,43 @@ class MainActivity : AppCompatActivity() {
                                 val currentRoute = navController
                                     .currentBackStackEntryAsState().value?.destination?.route
 
-                                Scaffold(
-                                    bottomBar = {
-                                        // The QR routes are full screen (camera preview / QR card).
-                                        if (!hidesBottomBar(currentRoute)) BottomNavBar(navController)
-                                    }
-                                ) { padding ->
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(padding)
-                                            // The root Scaffold already applied the status- and
-                                            // navigation-bar insets; consume them so the per-screen
-                                            // Scaffolds do not add them a second time.
-                                            .consumeWindowInsets(padding)
-                                    ) {
-                                        DarkMessageNavHost(
-                                            navController = navController,
-                                            incoming = pendingIncoming,
-                                            onIncomingConsumed = { mainViewModel.consume() }
+                                // Targeting API 36 enforces edge-to-edge, and a phone held
+                                // sideways has its camera cutout on the LEFT or RIGHT edge.
+                                // Scaffold, TopAppBar and NavigationBar pad for the system bars
+                                // only, never for the cutout, so on a Pixel 7 Pro in landscape
+                                // the first avatar and the first glyph of a row sat under the
+                                // hole-punch. Pad the whole shell horizontally by the cutout:
+                                // the root Surface still paints the background to the edge,
+                                // and windowInsetsPadding consumes what it applied, so the
+                                // screens' own Scaffolds do not add it a second time.
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .windowInsetsPadding(
+                                            WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)
                                         )
+                                ) {
+                                    Scaffold(
+                                        bottomBar = {
+                                            // The QR routes are full screen (camera preview / QR card).
+                                            if (!hidesBottomBar(currentRoute)) BottomNavBar(navController)
+                                        }
+                                    ) { padding ->
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(padding)
+                                                // The root Scaffold already applied the status- and
+                                                // navigation-bar insets; consume them so the per-screen
+                                                // Scaffolds do not add them a second time.
+                                                .consumeWindowInsets(padding)
+                                        ) {
+                                            DarkMessageNavHost(
+                                                navController = navController,
+                                                incoming = pendingIncoming,
+                                                onIncomingConsumed = { mainViewModel.consume() }
+                                            )
+                                        }
                                     }
                                 }
 
