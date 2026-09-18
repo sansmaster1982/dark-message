@@ -35,7 +35,7 @@ if (!hasReleaseSigning) {
 
 android {
     namespace = "com.darkmessage.app"
-    compileSdk = 35
+    compileSdk = 36
 
     signingConfigs {
         if (hasReleaseSigning) {
@@ -51,8 +51,8 @@ android {
     defaultConfig {
         applicationId = "com.darkmessage.app"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 9
+        targetSdk = 36
+        versionCode = 10
         versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
