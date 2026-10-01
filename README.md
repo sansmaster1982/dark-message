@@ -1,5 +1,7 @@
 # Dark Message
 
+[![Donate by bank card](https://img.shields.io/badge/Donate%20by%20bank%20card-2563EB?style=for-the-badge)](https://yoomoney.ru/to/410011004366707)
+
 Offline encrypted messaging for Android and iOS.
 
 You encrypt on your own phone, send the result through whatever app you already use — a
@@ -183,6 +185,8 @@ Apache License 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 ---
 
 ## Support the project
+
+**[Donate by bank card](https://yoomoney.ru/to/410011004366707)** via YooMoney. Enter an amount and select the bank card payment method.
 
 Dark Message is free, has no ads, no subscriptions and collects nothing. It is built and
 maintained by one person in his own time.
